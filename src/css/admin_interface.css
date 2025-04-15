@@ -1,0 +1,119 @@
+.catalog-price__box__admin {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    /* column-gap: 9.45rem;
+    max-width: 30.25rem; */
+    column-gap: 8.875rem;
+    max-width: 30rem;
+    width: 100%;
+}
+
+.catalog-price__box__admin__second {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    column-gap: 0.625rem;
+    max-width: 30.25rem;
+    width: 100%;
+}
+
+.create-set__search__admin {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    height: 100%;
+    background: #ffffff;
+    width: 100%;
+    border-radius: 0.125rem;
+    padding: 1rem 1rem 1rem;
+}
+
+
+
+.catalog-price__box__admin .button {
+    width: 10rem;
+    opacity: 0;
+    pointer-events: none;
+    min-width: auto;
+}
+
+.catalog-price__box__admin .button.js--active {
+    opacity: 1;
+    pointer-events: visible;
+}
+
+
+.approve_set__button__approve_the_set {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--purpurno-krasnyy);
+    color: var(--color-white);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 119%;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s all;
+    padding: 0.5rem 1rem;
+    user-select: none;
+}
+
+.approve_set__button__approved {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--temno-seryy);
+    color: var(--color-white);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 119%;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s all;
+    padding: 0.5rem 1rem;
+    user-select: none;
+}
+
+.catalog-price-total-wrapper__admin {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.catalog-price__box__admin__second {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    column-gap: 1.5rem;
+    max-width: 30rem;
+    width: 100%;
+}
+
+.create-search__input__admin__first {
+    font-weight: 400;
+    height: 100%;
+    font-size: 0.875rem;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    width: 150px;
+    background-color: transparent;
+    padding-bottom: 0.25rem;
+}
+
+.create-search__input__admin__second {
+    font-weight: 400;
+    height: 100%;
+    font-size: 0.875rem;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    width: 199px;
+    background-color: transparent;
+    padding-bottom: 0.25rem;
+    cursor: default;
+}
