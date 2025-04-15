@@ -151,7 +151,7 @@
                         await getRenderTaskResult($render_task.id);
 
                     // Делаем запрос на получение данных для прогресс-баров результата задачи на рендеринг
-                    await getRenderTaskResultProgress($render_task.id);
+                    // await getRenderTaskResultProgress($render_task.id);
 
                     // Обновляем изображения в свайпере
                     updateSwiperImages();
@@ -279,7 +279,6 @@
         update_swiper.set(true);
 
         processRenderTaskResults().then(async () => {
-            console.log($render_task_result_data);
 
             // Отмечаем, обязательный слот заполнен после окончания процесса рендеринга
             is_not_optional_slot_filled.set(true);
@@ -299,7 +298,6 @@
     function getStylumButtonClass() {
         // Если пользователь является админом, то кнопка Stylum активна всегда и нет необходимости менять сет, чтобы отправить его на рендеринг
         if ($is_admin_user) {
-            console.log($is_not_optional_slot_filled);
             return $is_not_optional_slot_filled ? " js--active" : "";
         }
         //  Если выбран обязательный товар или артикулы товаров, отправленных ранее на рендеринг, не совпадают с артикулами товаров, которые находятся в заполненных слотах, то отображяется кнопка Stylum
