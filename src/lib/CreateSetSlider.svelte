@@ -233,7 +233,14 @@
                     </div>
                 </div> -->
 
-                <img class="swiper-slide" src={image} alt="image" />
+                <img
+                    class="swiper-slide"
+                    on:error={() => {
+                        $update_swiper = true;
+                    }}
+                    src={image}
+                    alt="image"
+                />
             {/each}
         </div>
         <div
@@ -274,12 +281,6 @@
             </svg>
         </div>
     </div>
-
-    <!-- {#if $show_product_images} 
-        <ProductImagesSwiper />
-    {:else}
-        <SetImagesSwiper />
-    {/if} -->
 
     <!-- Этот элемент отвечает за окно, которое лежит поверх свайпера с изображениями. -->
 
@@ -500,7 +501,7 @@
     </div>
 
     <!-- ($is_set_card_page || $render_task_result_data.images.length > 0) && $is_authenticated -->
-    {#if $render_task_result_data.images.length > 0 && $is_authenticated}
+    {#if $render_task_result_data.images.length > 0 && $is_authenticated && !$render_in_progress}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div

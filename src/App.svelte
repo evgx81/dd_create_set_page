@@ -197,6 +197,10 @@
       // Ищем кнопку "Video"
       const video_slider_element = document.getElementById("video");
 
+      if (!video_slider_element) {
+        return;
+      }
+
       // Если пользователь пролистал страницу до любой части блока с видео,
       // то скрываем кнопку "Video"
       $go_to_video_button_is_scrolled =
@@ -213,6 +217,10 @@
       // Ищем кнопку "Interactive Photos"
       const interactive_photos_slider_element =
         document.getElementById("interactive-photos");
+
+      if (!interactive_photos_slider_element) {
+        return;
+      }
 
       // Если пользователь прокрутил страницу до любой части блока с панорамами,
       // то скрываем кнопку "Interactive photos"
@@ -322,22 +330,20 @@
     {/if}
 
     {#if $show_products_catalog}
+      {#if general_category_products !== undefined}
+        <ProductCatalog {general_category_name} />
+        <Footer />
+      {:else}
+        {#await products_promise}
+          <LoadingDataWindow />
+        {:then}
+          <ProductCatalog {general_category_name} />
+          <Footer />
+        {/await}
+      {/if}
 
-        {#if general_category_products !== undefined}
-            <ProductCatalog {general_category_name} />
-            <Footer />
-        {:else}
-          {#await products_promise}
-            <LoadingDataWindow />
-          {:then}
-            <ProductCatalog {general_category_name} />
-            <Footer />
-          {/await}
-        {/if}
-    
-    <!-- Дополнительный блок с else нужен, чтобы не отображать компонент Footer во время загрузки каталога товаров  -->
+      <!-- Дополнительный блок с else нужен, чтобы не отображать компонент Footer во время загрузки каталога товаров  -->
     {:else}
-    
       <div
         class={`section-wrapper${$show_render_results_sliders ? "" : " js--hidden"}`}
         data-name="default-sections-parent"

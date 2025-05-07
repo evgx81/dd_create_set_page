@@ -45,7 +45,7 @@
         setInterval(async function () {
             try {
                 const raspredelytor_resp = await fetch(
-                    `http://149.126.98.106:8899/status/user/stylum/${$user_data.email.replace("@", "%40")}`,
+                    `http://149.126.98.106:8888/status/user/stylum/${$user_data.email.replace("@", "%40")}`,
                 );
 
                 if (!raspredelytor_resp.ok) {
@@ -62,9 +62,9 @@
 
     onMount(async () => {
         // Если пользователь авторизован, то проверяем доступность кнопки "Stylum"
-        // if ($is_authenticated) {
-        //     await isActiveStylumButton();
-        // }
+        if ($is_authenticated) {
+            await isActiveStylumButton();
+        }
     });
 
     /**
@@ -73,7 +73,7 @@
      */
     async function getRenderTaskResultProgress(render_task_id) {
         fetch(
-            `http://149.126.98.106:8899/status/progress/task/${render_task_id}`,
+            `http://149.126.98.106:8888/status/progress/task/${render_task_id}`,
         )
             .then((progress_resp) => {
                 if (!progress_resp.ok) {
@@ -151,7 +151,7 @@
                         await getRenderTaskResult($render_task.id);
 
                     // Делаем запрос на получение данных для прогресс-баров результата задачи на рендеринг
-                    // await getRenderTaskResultProgress($render_task.id);
+                    await getRenderTaskResultProgress($render_task.id);
 
                     // Обновляем изображения в свайпере
                     updateSwiperImages();

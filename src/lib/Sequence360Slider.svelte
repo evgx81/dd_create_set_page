@@ -46,6 +46,8 @@
             $render_task_result_data.sequences.forEach((link) => {
                 links.push(`"${link}"`);
             });
+
+            console.log(links);
             viewToUpdate.setAttribute("data-image-list-x", `[${links}]`);
 
             // Если слайдер с панорамами уже инициализирован, то удаляем его и инициализируем его повторно.

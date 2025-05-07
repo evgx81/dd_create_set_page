@@ -12,7 +12,7 @@
      * Флаг того, что видео загружено в видеоплеер
      * @type {boolean}
      */
-    let video_can_be_loaded = true;
+    let video_can_be_loaded = false;
 
     /**
      * Ссылка на текущее видео сета
@@ -30,7 +30,7 @@
         let curr_style = "js--active";
 
         // Выводим результирующее видео, если оно получено и готово к проигрыванию
-        if (curr_video_link) {
+        if ($render_task_result_data.videos.length > 0 && ready_to_play) {
             curr_style = "js--none";
         }
         // Если происходит рендеринг, то выводим окно с прогресс-баром
