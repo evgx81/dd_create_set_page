@@ -1,19 +1,14 @@
 <script>
-    import { afterUpdate } from "svelte";
-    import { render_task_result_data } from "./stores";
+    import { is_set_deleted, render_task_result_data } from "./stores";
 
-    // /**
-    //  * Показывает, нажата ли кнопка "Approve the set"
-    //  * @type {boolean}
-    //  */
-    // let is_set_approved = false;
-
-    // afterUpdate(() => {
+    /**
+     * Определяет, были ли получены все результаты рендеринга
+     * @type{boolean}
+     */
     $: got_all_render_task_result_data =
         $render_task_result_data.images.length > 0 &&
         $render_task_result_data.videos.length > 0 &&
         $render_task_result_data.sequences.length > 0;
-    // })
 
     /**
      * Активирует или дизактивирует показ сета на главной странице и в каталогах сетов
@@ -32,6 +27,7 @@
             }
 
             $render_task_result_data.is_product_set_active = false;
+
         } else {
             const resp = await fetch(
                 "/products/product_sets/set_active?" +
@@ -45,6 +41,7 @@
             }
 
             $render_task_result_data.is_product_set_active = true;
+            
         }
     }
     
@@ -52,9 +49,9 @@
 
 <!-- Если получены все результаты рендеринга пока не получены, то кнопка "Approve the set" недоступна и помечена серым цветом-->
 <button
-    style={`${got_all_render_task_result_data ? "" : "background: #808080"}`}
+    style={`${!got_all_render_task_result_data || $is_set_deleted ? "background: #808080" : ""}`}
     class={`${$render_task_result_data.is_product_set_active ? "approve_set__button__approved" : "approve_set__button__approve_the_set"}`}
-    disabled={!got_all_render_task_result_data}
+    disabled={!got_all_render_task_result_data || $is_set_deleted}
     on:click={() => handleApproveSetClick()}
 >
     {#if $render_task_result_data.is_product_set_active}

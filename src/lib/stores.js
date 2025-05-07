@@ -500,14 +500,22 @@ export const show_go_to_video_button = writable(false);
 export const show_go_to_interactive_photos_button = writable(false);
 
 /**
- * Показывает,  "Interactive photos" отобдля перехода к слайдеру с панорамами
+ * Показывает, прокрутил ли пользователь кнопку "Video"
  * @type {import("svelte/store").Writable.<boolean>}
  */
 export const go_to_video_button_is_scrolled = writable(false);
 
+/**
+ * Показывает, прокрутил ли пользователь кнопку "Interactive photos"
+ * @type {import("svelte/store").Writable.<boolean>}
+ */
 export const go_to_interactive_button_is_scrolled = writable(false);
 
-
+/**
+ * Показывает, удален ли сет
+ * @type {import("svelte/store").Writable.<boolean>}
+ */
+export const is_set_deleted = writable(false);
 
 /**
  * Процедура, которая инициализирует перелистывание изображений на слайдере результатов рендеринга

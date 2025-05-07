@@ -28,6 +28,7 @@
         go_to_first_swiper_slide,
         is_admin_user,
         is_set_card_page,
+        is_set_deleted,
     } from "./stores";
     import { afterUpdate, onMount } from "svelte";
 
@@ -169,6 +170,10 @@
     }
 
     async function handleStylumClick() {
+
+        // Отмечаем, что после нажатия на кнопку "Stylum" сет не удален. Это нужно, чтобы корректно отображать кнопки "Approve the set" и "Delete the set" после получения результатов рендеринга
+        is_set_deleted.set(false);
+
         // Отмечаем, обязательный слот не заполнен. Нужно, чтобы убрать показ кнопки "Stylum" после нажатия на нее
         is_not_optional_slot_filled.set(false);
 

@@ -25,6 +25,7 @@
     import StylumButton from "./StylumButton.svelte";
     import SceneInput from "./SceneInput.svelte";
     import ApproveSetButton from "./ApproveSetButton.svelte";
+    import DeleteSetButton from "./DeleteSetButton.svelte";
 
     const createSetScrollbar = (parent) => {
         const track = parent.querySelector('[data-name-scrollbar="track"]');
@@ -409,6 +410,7 @@
             {#if $is_admin_user}
                 <div class="catalog-price__box__admin">
                     <StylumButton />
+                    <DeleteSetButton />
                     <ApproveSetButton />
                 </div>
             {:else}
