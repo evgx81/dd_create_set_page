@@ -159,15 +159,16 @@
         if ($is_set_card_page) {
             // Инициализируем массив выбранных элементов сета
             $slots.forEach((element) => {
-                // Для каждого слота ищем товар, который имеет ту же самую укрупненную категорию, но не добавлен в сет (такой механизм позволит избежать дублирования товара на слотах)
+                // Ищем товар, укрупненные категории которого содержат укрупненную категорию слота, но не добавлен в сет (такой механизм позволит избежать дублирования товара на слотах)
+                // Поскольку слоты выводятся в порядке убывания важности слота, сначала заполнятся обязательные слоты, а потом необязательные
                 let curr_product = $set_data.products
                     .filter(
                         (product) => product.is_added_to_chosen_slots === false,
                     )
                     .find(
                         (product) =>
-                            product.general_category_ids[0] ===
-                            element.general_category_id,
+                            product.general_category_ids.includes(
+                            element.general_category_id),
                     );
 
                 let curr_chosen_slot =
@@ -253,7 +254,6 @@
 
             // Отмечаем, что заполнен обязательный слот
             is_not_optional_slot_filled.set(true);
-            
         } else {
             // Запрашиваем из БД все, что касается укрупненных категорий типа сета
             // await fetch(

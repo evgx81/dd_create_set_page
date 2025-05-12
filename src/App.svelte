@@ -176,12 +176,21 @@
     // Запоминаем данные сета
     set_data.set(product_set_data[0]);
 
+    // Если данные сета не найдены, то ничего не делаем
+    if ($set_data === undefined) {
+      return;
+    }
+
     // Помечаем, что каждый товар сета пока не добавлен в слот
     $set_data.products.forEach((product) => {
       product.is_added_to_chosen_slots = false;
     });
 
     set_data.set($set_data);
+
+    // Запоминаем идентификатор типа сета
+    chosen_set_type_id.set($set_data.set_type_id);
+
     console.log($set_data);
   }
 
@@ -266,13 +275,13 @@
       // Получаем данные сета
       await getProductSetData(set_id);
 
-      chosen_set_type_id.set($set_data.set_type_id);
+      if ($set_data !== undefined) {
+        // Показываем страницу со слайдерами
+        show_create_set_page = true;
 
-      // Показываем страницу со слайдерами
-      show_create_set_page = true;
-
-      // После показа карточки сета догружаем сеты, похожие на данный сет
-      await getSimilarProductSets(set_id);
+        // После показа карточки сета догружаем сеты, похожие на данный сет
+        await getSimilarProductSets(set_id);
+      }
     }
   });
 
@@ -309,12 +318,21 @@
       <MobilePreview />
     </div>
   {/if}
+
+  {#if $set_data === undefined}
+    <Header />
+
+    <section class="section section-quote section-quote--sm">
+      <div class="section-quote__text section-quote__text--sm">
+        This set was deleted by the administrator
+      </div>
+    </section>
+
+    <Footer />
+    <MobilePreview />
+  {/if}
+
   {#if show_create_set_page}
-    <!-- <div
-      class="section-wrapper"
-      data-name="default-sections-parent"
-      transition:fade={{ duration: 2000 }}
-    > -->
     <div transition:fade={{ duration: 2000 }}>
       <Header />
       <CreateSet on:message={handleChosenSetComponent} />

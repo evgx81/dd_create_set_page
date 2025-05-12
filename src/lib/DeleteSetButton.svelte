@@ -37,6 +37,7 @@
             return;
         }
 
+        // Обновляем количество сетов в избранном
         await getUserNumberFavouriteSets(token);
     }
     
