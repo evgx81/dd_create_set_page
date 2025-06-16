@@ -1,4 +1,5 @@
 <script>
+    import { afterUpdate } from "svelte";
     import {
         total_amount_of_products,
         curr_chosen_slot_num,
@@ -22,6 +23,7 @@
      */
     function getProductDisplayName() {
         let curr_display_name = product.name;
+        console.log(curr_display_name);
 
         // Если наименование состоит из одной строки, то добавляем перенос строки сначала
         // (цена будет на той же строке, что и наименование)
@@ -46,6 +48,8 @@
         if (product.name.length > 76) {
             curr_display_name = curr_display_name.slice(0, 50) + "...";
         }
+
+        console.log(curr_display_name);
 
         return curr_display_name;
     }
@@ -128,6 +132,14 @@
         // Обновляем список товаров
         products.set($products);
     }
+
+    let display_product_name;
+    afterUpdate(() => {
+        // Получаем название товара для отображения на странице. Вызываем функцию тут, чтобы после фильтрации
+        // корректно вычислялось отображалось наименолвание товара
+        display_product_name = getProductDisplayName();
+    })
+
 </script>
 
 <div class="catalogs__set-free-img-wrapper">
@@ -162,7 +174,7 @@
                 <div class="set-options__info-subtitle">{product.brand}</div>
                 <div class="set-options__info-row">
                     <div class="set-options__info-title">
-                        {@html getProductDisplayName()}
+                        {@html display_product_name}
                     </div>
                     <div class="set-options__info-price">$ {product.price}</div>
                 </div>

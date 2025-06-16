@@ -1,6 +1,6 @@
 <script>
 
-    import { getUserNumberFavouriteSets, render_task_result_data, getCookie, is_set_deleted } from "./stores";
+    import { getUserNumberFavouriteSets, render_task_result_data, getCookie, is_set_deleted, render_in_progress, render_task } from "./stores";
 
     /**
      * Определяет, были ли получены все результаты рендеринга
@@ -43,11 +43,11 @@
     
 </script>
 
-<!-- Если получены все результаты рендеринга пока не получены, то кнопка "Approve the set" недоступна и помечена серым цветом-->
+<!-- Если задача на рендеринг не создана или идет рендеринг или сет уже удален, то кнопка "Delete" недоступна и помечена серым цветом-->
 <button
-    style={`${!got_all_render_task_result_data ? "background: #808080" : ""}`}
+    style={`${$render_task_result_data.product_set_id === "" || $render_in_progress || $is_set_deleted ? "background: #808080" : ""}`}
     class="delete_set__button__delete_the_set"
-    disabled={!got_all_render_task_result_data || $is_set_deleted}
+    disabled={$render_task_result_data.product_set_id === "" || $render_in_progress || $is_set_deleted}
     on:click={() => handleDeleteSetClick()}
 >
     {#if $is_set_deleted}

@@ -27,7 +27,6 @@
         update_swiper,
         go_to_first_swiper_slide,
         is_admin_user,
-        is_set_card_page,
         is_set_deleted,
     } from "./stores";
     import { afterUpdate, onMount } from "svelte";
@@ -46,7 +45,7 @@
         setInterval(async function () {
             try {
                 const raspredelytor_resp = await fetch(
-                    `http://149.126.98.106:8888/status/user/stylum/${$user_data.email.replace("@", "%40")}`,
+                    `https://api.stylum.ai/status/user/stylum/${$user_data.email.replace("@", "%40")}`,
                 );
 
                 if (!raspredelytor_resp.ok) {
@@ -74,7 +73,7 @@
      */
     async function getRenderTaskResultProgress(render_task_id) {
         fetch(
-            `http://149.126.98.106:8888/status/progress/task/${render_task_id}`,
+            `https://api.stylum.ai/status/progress/task/${render_task_id}`,
         )
             .then((progress_resp) => {
                 if (!progress_resp.ok) {
