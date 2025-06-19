@@ -23,7 +23,6 @@
      */
     function getProductDisplayName() {
         let curr_display_name = product.name;
-        console.log(curr_display_name);
 
         // Если наименование состоит из одной строки, то добавляем перенос строки сначала
         // (цена будет на той же строке, что и наименование)
@@ -48,8 +47,6 @@
         if (product.name.length > 76) {
             curr_display_name = curr_display_name.slice(0, 50) + "...";
         }
-
-        console.log(curr_display_name);
 
         return curr_display_name;
     }
@@ -133,6 +130,10 @@
         products.set($products);
     }
 
+    /**
+     * Хранит наименование товара для отображения на странице
+     * @type {string}
+     */
     let display_product_name;
     afterUpdate(() => {
         // Получаем название товара для отображения на странице. Вызываем функцию тут, чтобы после фильтрации

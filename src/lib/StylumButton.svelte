@@ -62,9 +62,9 @@
 
     onMount(async () => {
         // Если пользователь авторизован, то проверяем доступность кнопки "Stylum"
-        if ($is_authenticated) {
-            await isActiveStylumButton();
-        }
+        // if ($is_authenticated) {
+        //     await isActiveStylumButton();
+        // }
     });
 
     /**
@@ -151,7 +151,7 @@
                         await getRenderTaskResult($render_task.id);
 
                     // Делаем запрос на получение данных для прогресс-баров результата задачи на рендеринг
-                    await getRenderTaskResultProgress($render_task.id);
+                    // await getRenderTaskResultProgress($render_task.id);
 
                     // Обновляем изображения в свайпере
                     updateSwiperImages();
@@ -305,6 +305,8 @@
             return $is_not_optional_slot_filled ? " js--active" : "";
         }
         //  Если выбран обязательный товар или артикулы товаров, отправленных ранее на рендеринг, не совпадают с артикулами товаров, которые находятся в заполненных слотах, то отображяется кнопка Stylum
+        console.log($curr_chosen_sku)
+        console.log(!_.isEqual($curr_chosen_sku, $product_set_data_for_rendering.sku));
         return $is_not_optional_slot_filled &&
             !_.isEqual($curr_chosen_sku, $product_set_data_for_rendering.sku)
             ? " js--active"
