@@ -13,7 +13,26 @@
 
     /**
      * Данные о текущем товаре
-     * @type {{sku: string, general_category_ids: Array.<string>, name: string, brand: string, country_of_origin: string, length: number, width: number, height: number, colors: Array.<string>, price: number, images: Array.<string>, materials: Array.<string>, is_added_to_set: boolean, size_category_name: string, size_category_priority: number, amount_in_sets: number}}
+     * @type {{
+     * sku: string,
+     * name: string,
+     * brand: string,
+     * country_of_origin: string,
+     * colors: Array.<string>,
+     * price: number,
+     * general_category_ids: Array.<string>,
+     * length: number,
+     * width: number,
+     * height: number,
+     * images: Array.<string>,
+     * images_for_catalog: Array.<string>,
+     * image_for_slot: string,
+     * materials: Array.<string>,
+     * is_added_to_set: boolean,
+     * size_category_name: string,
+     * size_category_priority: number,
+     * amount_in_sets: number,
+     * category: string}}
      */
     export let product;
 
@@ -91,6 +110,7 @@
         chosen_slot.clicked_modify_button = false; // Отщелкиваем кнопку "Modify"
         chosen_slot.clicked_delete_button = false; // Отщелкиваем кнопку "Delete"
         chosen_slot.images = product.images;
+        chosen_slot.product_image_for_slot = product.image_for_slot;
         chosen_slot.sku = product.sku;
         chosen_slot.brand = product.brand;
         chosen_slot.name = product.name;
@@ -139,14 +159,13 @@
         // Получаем название товара для отображения на странице. Вызываем функцию тут, чтобы после фильтрации
         // корректно вычислялось отображалось наименолвание товара
         display_product_name = getProductDisplayName();
-    })
-
+    });
 </script>
 
 <div class="catalogs__set-free-img-wrapper">
     <div class="catalogs__set-free-img swiper">
         <div class="swiper-wrapper">
-            {#each product.images as image}
+            {#each product.images_for_catalog as image}
                 <!-- svelte-ignore a11y-img-redundant-alt -->
                 <img class="swiper-slide" src={image} alt="image" />
             {/each}

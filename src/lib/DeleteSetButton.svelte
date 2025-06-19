@@ -1,6 +1,6 @@
 <script>
 
-    import { getUserNumberFavouriteSets, render_task_result_data, getCookie, is_set_deleted, render_in_progress, render_task } from "./stores";
+    import { getUserNumberFavouriteSets, render_task_result_data, getCookie, is_set_deleted, render_in_progress, } from "./stores";
 
     /**
      * Определяет, были ли получены все результаты рендеринга

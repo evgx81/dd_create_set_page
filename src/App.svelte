@@ -103,13 +103,6 @@
         );
       });
 
-    // .then((r) => $products.data = [...$products.data, ...r]);
-
-    // if (res.ok) {
-    //   return await res.json();
-    // } else {
-    //   throw new Error("Products data fetch failed!");
-    // }
   }
 
   let general_category_products;

@@ -12,7 +12,6 @@
         render_task_result_data,
         show_render_results_sliders,
         is_authenticated,
-        curr_chosen_sku,
         is_set_card_page,
         swiper_images,
         update_swiper,
@@ -20,88 +19,13 @@
 
     /**
      * Данные выбранного слота для заполнения
-     * @type {{order_num: number, is_chosen: boolean, show_delete_button: boolean, show_modify_button: boolean, clicked_modify_button: boolean, clicked_delete_button: boolean, is_optional: boolean, sku: string, images: Array.<string>, brand: string, name: string, length: number, width: number, height: number, color: string, price: number}}
+     * @type {{order_num: number, is_chosen: boolean, show_delete_button: boolean, show_modify_button: boolean, clicked_modify_button: boolean, clicked_delete_button: boolean, is_optional: boolean, sku: string, images: Array.<string>, brand: string, name: string, length: number, width: number, height: number, color: string, price: number, product_image_for_slot: string}}
      */
     export let filled_slot;
 
     export let general_category_id;
 
     export let general_category_name;
-
-    // let display_product_name_of_filled_slot;
-    // let display_product_colors_of_filled_slot;
-
-    // Количество выводимых символов считается в зависимости от того, нужно ли отображать кнопку "Delete" или "Modify"
-    // afterUpdate(() => {
-    //     // Определяем количество символов для обязательных слотов
-    //     // let symbols_number_for_not_optional_slot =
-    //     //     filled_slot.show_modify_button ? 25 : 45;
-
-    //     // // Определяем количество символов для опциональных слотов
-    //     // let symbols_number_for_optional_slot = filled_slot.show_delete_button
-    //     //     ? filled_slot.show_modify_button
-    //     //         ? 14
-    //     //         : 30
-    //     //     : 45;
-
-    //     console.log(symbols_number_for_optional_slot);
-
-    //     display_product_name_of_filled_slot = getProductDisplayName(
-    //         filled_slot.name,
-    //         symbols_number_for_not_optional_slot,
-    //         symbols_number_for_optional_slot,
-    //     );
-
-    //     display_product_colors_of_filled_slot = getColorName(
-    //         filled_slot.color,
-    //         filled_slot.show_delete_button,
-    //         filled_slot.show_modify_button,
-    //     );
-    // });
-
-    // function getProductDisplayName(
-    //     filled_slot_product_name,
-    //     symbols_number_for_not_optional_slot,
-    //     symbols_number_for_optional_slot,
-    // ) {
-    //     if (
-    //         !filled_slot.is_optional &&
-    //         filled_slot.name.length > symbols_number_for_not_optional_slot
-    //     ) {
-    //         // Условие для обязательных слотов
-    //         return (
-    //             filled_slot.name.slice(
-    //                 0,
-    //                 symbols_number_for_not_optional_slot,
-    //             ) + "..."
-    //         );
-    //     } else if (
-    //         filled_slot.is_optional &&
-    //         filled_slot.name.length > symbols_number_for_optional_slot
-    //     ) {
-    //         // Условие для необязательных слотов
-    //         return (
-    //             filled_slot_product_name.slice(
-    //                 0,
-    //                 symbols_number_for_optional_slot,
-    //             ) + "..."
-    //         );
-    //     }
-
-    //     return filled_slot_product_name;
-    // }
-
-    // function getColorName(
-    //     filled_slot_color,
-    //     show_delete_button,
-    //     show_modify_button,
-    // ) {
-    //     return show_delete_button &&
-    //         show_modify_button &&
-    //         filled_slot_color.length > 5
-    //         ? filled_slot.color.slice(0, 5) + "..."
-    //         : filled_slot.color.slice(0, 45);
-    // }
 
     /**
      * Возвращает количество символов наименования выбранного товара, отображаемое на заполненном слоте
@@ -136,21 +60,13 @@
     let number_of_name_symbols;
     let number_of_color_name_symbols;
     afterUpdate(() => {
+
         // Определяем количество символов наименования товара, которое будет отображаться на слоте
         number_of_name_symbols = getNumberOfSymbolsOfName(filled_slot);
 
         // Определяем количество символов наименования товара, которое будет отображаться на слоте
         number_of_color_name_symbols =
             getNumberOfSymbolsForSizeAndColor(filled_slot);
-
-        // Запоминаем в стор артикулы выбранных товаров
-        curr_chosen_sku.set(
-            Array.from(
-                $chosen_slots
-                    .filter((slot) => slot.is_chosen === true)
-                    .map((filled_slot) => filled_slot.sku),
-            ),
-        );
     });
 
     const dispatch = createEventDispatcher();
@@ -315,9 +231,6 @@
 
         chosen_slots.set($chosen_slots);
 
-        // curr_swiper_images.set([]);
-        // show_product_images.set(false);
-
         // Если получены уже получчены изобажения сета, то при удалении товара из слота на свайпере выводятся изображения сета
         if ($render_task_result_data.images.length > 0) {
             swiper_images.set($render_task_result_data.images);
@@ -354,7 +267,7 @@
 >
     <div class="catalog-list-item">
         <img
-            src={filled_slot.images[0]}
+            src={filled_slot.product_image_for_slot}
             alt="furniture"
             class="catalog-list-item__img"
         />
@@ -395,16 +308,6 @@
     <!-- Следующий блок отвечает за правильное расположение кнопок на слоте (иначе будет некрасиво вылезать за поля) -->
     <!-- ----------------------------------------------------------------------------------------------------------- -->
 
-    <!-- Если не получены результаты рендеринга изображений, то на слоте выводится кнопка только "Delete" (для необязательных слотов)
-    {#if $render_task_result_data.images.length === 0}
-        {#if filled_slot.show_delete_button && filled_slot.is_optional}
-            <button
-                class="configure__button dark"
-                data-name="button-delete"
-                on:click={() => handleDeleteFilledSlot()}>Delete</button
-            >
-        {/if}
-    {:else} -->
     <!-- Если получены результаты рендеринга изображений, то на ранее заполненном слоте выводятся кнопки "Modify" и "Delete" (для необязательных слотов), -->
     <!-- Если слот был ранее пустым, но после редактирования товаров в сете стал заполненным, то у него выводтся только кнопка "Delete"                disabled={filled_slot.clicked_modify_button} -->
     <div
@@ -448,49 +351,3 @@
         {/if}
     </div>
 </li>
-
-<!--         // Если уже получили результаты рендеринга изображений, но нажали заполненный слот,
-        // то результаты рендеринга не показываем и в заполненном слоте отображаем кнопки "Modify" и "Delete".
-
-        // При повторном нажатии кнопки "Modify" и "Delete" скрываются, вновь отображаются изображения сета,
-        // но последовательности и видео остаются.
-        // if ($render_task_result_data.images.length > 0) {
-        //     // При нажатии на кнопку "Modify" сначала работает обработчик "handleModifyClick", а потом - "handleFilledSlotClick"
-
-        //     filled_slot.show_modify_button = !filled_slot.show_modify_button;
-        //     if (filled_slot.is_optional) {
-        //         filled_slot.show_delete_button =
-        //             !filled_slot.show_delete_button;
-        //     }
-
-        //     // Отображаются изображения сета или изображения товара
-        //     $show_product_images = !$show_product_images;
-        // } else {
-        // Сценарий, когда результаты рендеринга еще не получены
-
-        // // На заполненном слоте всегда выводим кнопку "Modify"
-        // filled_slot.show_modify_button = true;
-
-        // // При повторном нажатии на заполненный слот выводим кнопку "Delete" у необязателльных слотов
-        // if (filled_slot.is_optional) {
-        //     filled_slot.show_delete_button = true;
-        // }
-
-        // // Показываем изображения товара на слайдере изображений сета
-        // $show_product_images = true;
-
-        //     // Убираем все выбранные фильтры
-        //     $filters = {
-        //         brands: [],
-        //         colors: [],
-        //         materials: [],
-        //         sizes: [],
-        //         decor_categories: [],
-        //         price_asc: false,
-        //         price_desc: false,
-        //         most_popular: false,
-        //         size_asc: false,
-        //         size_desc: false,
-        //     };
-        // }        
-// swiper_product_images.set(filled_slot.images);-->

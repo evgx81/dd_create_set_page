@@ -13,7 +13,6 @@
         total_amount_of_products,
         total_price,
         product_set_data_for_rendering,
-        curr_chosen_sku,
         show_render_results_sliders,
         swiper_images,
         update_swiper,
@@ -165,10 +164,10 @@
                     .filter(
                         (product) => product.is_added_to_chosen_slots === false,
                     )
-                    .find(
-                        (product) =>
-                            product.general_category_ids.includes(
-                            element.general_category_id),
+                    .find((product) =>
+                        product.general_category_ids.includes(
+                            element.general_category_id,
+                        ),
                     );
 
                 let curr_chosen_slot =
@@ -190,6 +189,8 @@
                               height: curr_product.height,
                               color: curr_product.color,
                               price: curr_product.price,
+                              product_image_for_slot:
+                                  curr_product.product_image_for_slot,
                           }
                         : {
                               order_num: element.order_num,
@@ -208,6 +209,7 @@
                               height: 0,
                               color: "",
                               price: 0,
+                              product_image_for_slot: "",
                           };
                 $chosen_slots.push(curr_chosen_slot);
 
@@ -221,19 +223,14 @@
             total_amount_of_products.set(countTotalSetAmountOfProducts());
             total_price.set(countTotalSetPrice());
 
-            // Запоминаем в стор артикулы выбранных товаров
-            curr_chosen_sku.set(
-                Array.from(
+            // Заполняем данные, необходимые для создания задачи на рендеринг данного сета для правильного отображения кнопки "Stylum"
+            $product_set_data_for_rendering = {
+                chosen_set_type_id: $chosen_set_type_id,
+                sku: Array.from(
                     $chosen_slots
                         .filter((slot) => slot.is_chosen)
                         .map((filled_slot) => filled_slot.sku),
                 ),
-            );
-
-            // Заполняем данные, необходимые для создания задачи на рендеринг данного сета для правильного отображения кнопки "Stylum"
-            $product_set_data_for_rendering = {
-                chosen_set_type_id: $chosen_set_type_id,
-                sku: $curr_chosen_sku,
                 scene: $set_data.scene,
             };
 
@@ -255,45 +252,6 @@
             // Отмечаем, что заполнен обязательный слот
             is_not_optional_slot_filled.set(true);
         } else {
-            // Запрашиваем из БД все, что касается укрупненных категорий типа сета
-            // await fetch(
-            //     "/products/products/set_type_categories?" +
-            //         new URLSearchParams({
-            //             set_type_id: $chosen_set_type_id,
-            //         }).toString(),
-            // )
-            //     .then((resp) => resp.json())
-            //     .then((data) => {
-            //         // Сохраняем в стор состояние элементов сета
-            //         slots.set(data);
-            //         console.log($slots);
-            //         // Инициализируем массив выбранных элементов сета
-            //         $slots.forEach((element) => {
-            //             $chosen_slots.push({
-            //                 order_num: element.order_num,
-            //                 is_chosen: false,
-            //                 is_optional: element.is_optional,
-            //                 show_delete_button: false,
-            //                 show_modify_button: false,
-            //                 clicked_modify_button: false,
-            //                 clicked_delete_button: false,
-            //                 images: [],
-            //                 sku: "",
-            //                 brand: "",
-            //                 name: "",
-            //                 length: 0,
-            //                 width: 0,
-            //                 height: 0,
-            //                 color: "",
-            //                 price: 0,
-            //             });
-            //         });
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //         slots.set([]);
-            //     });
-
             // Инициализируем массив выбранных элементов сета
             $slots.forEach((element) => {
                 $chosen_slots.push({
@@ -313,6 +271,7 @@
                     height: 0,
                     color: "",
                     price: 0,
+                    product_image_for_slot: "",
                 });
             });
         }

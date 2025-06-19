@@ -28,7 +28,6 @@
     afterUpdate(() => {
         // Нужно, чтобы после нажатия на кнопку "Load more" или фильтрации товаров изображения товаров перелистывались
         initProductAndSimilarProductSetSliders();
-        console.log($products_filtered);
     });
 
     onMount(() => {

@@ -9,7 +9,7 @@
         render_task_result_data,
         show_products_catalog,
         filters,
-        curr_chosen_sku,
+        // curr_chosen_sku,
         similar_product_sets,
         show_render_results_sliders,
         getCookie,
@@ -21,7 +21,6 @@
         go_to_video_button_is_scrolled,
         go_to_interactive_button_is_scrolled,
         show_go_to_interactive_photos_button,
-        is_authenticated,
         progress_render_task_result,
         swiper_images,
         update_swiper,
@@ -72,9 +71,7 @@
      * @param {string} render_task_id - идентификатор задачи на рендерениг
      */
     async function getRenderTaskResultProgress(render_task_id) {
-        fetch(
-            `https://api.stylum.ai/status/progress/task/${render_task_id}`,
-        )
+        fetch(`https://api.stylum.ai/status/progress/task/${render_task_id}`)
             .then((progress_resp) => {
                 if (!progress_resp.ok) {
                     console.log(
@@ -169,7 +166,6 @@
     }
 
     async function handleStylumClick() {
-
         // Отмечаем, что после нажатия на кнопку "Stylum" сет не удален. Это нужно, чтобы корректно отображать кнопки "Approve the set" и "Delete the set" после получения результатов рендеринга
         is_set_deleted.set(false);
 
@@ -188,7 +184,7 @@
         // Определяем данные товаров, необходимые для создания задачи на рендеринг
         $product_set_data_for_rendering = {
             chosen_set_type_id: $chosen_set_type_id, // Идентификатор типа сета
-            sku: $curr_chosen_sku, // Массив артикулов товаров, выбранных пользователем
+            sku: curr_chosen_sku, // Массив артикулов товаров, выбранных пользователем
             scene: $render_task_result_data.scene, // Значение сцены берем из результатов рендеринга, при первом создании сета поле "scene" принимает значение пустой строки
         };
 
@@ -283,7 +279,6 @@
         update_swiper.set(true);
 
         processRenderTaskResults().then(async () => {
-
             // Отмечаем, обязательный слот заполнен после окончания процесса рендеринга
             is_not_optional_slot_filled.set(true);
 
@@ -297,23 +292,28 @@
         });
     }
 
-    let curr_stylum_button_style = "";
-
     function getStylumButtonClass() {
         // Если пользователь является админом, то кнопка Stylum активна всегда и нет необходимости менять сет, чтобы отправить его на рендеринг
         if ($is_admin_user) {
             return $is_not_optional_slot_filled ? " js--active" : "";
         }
+
         //  Если выбран обязательный товар или артикулы товаров, отправленных ранее на рендеринг, не совпадают с артикулами товаров, которые находятся в заполненных слотах, то отображяется кнопка Stylum
-        console.log($curr_chosen_sku)
-        console.log(!_.isEqual($curr_chosen_sku, $product_set_data_for_rendering.sku));
         return $is_not_optional_slot_filled &&
-            !_.isEqual($curr_chosen_sku, $product_set_data_for_rendering.sku)
+            !_.isEqual(curr_chosen_sku, $product_set_data_for_rendering.sku)
             ? " js--active"
             : "";
     }
 
+    let curr_stylum_button_style = "";
+    let curr_chosen_sku = [];
+
     afterUpdate(() => {
+        curr_chosen_sku = Array.from(
+            $chosen_slots
+                .filter((slot) => slot.is_chosen)
+                .map((filled_slot) => filled_slot.sku),
+        );
         curr_stylum_button_style = getStylumButtonClass();
     });
 </script>
